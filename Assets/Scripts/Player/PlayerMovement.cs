@@ -38,7 +38,6 @@ public class PlayerMovement : MonoBehaviour
 
         // Find velocity
         velocity = speed * Time.deltaTime;
-        Debug.Log(velocity);
 
         // Apply player movement
         transform.position = new Vector2(transform.position.x + xdir * velocity, transform.position.y + ydir * velocity);
