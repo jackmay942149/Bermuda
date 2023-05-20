@@ -8,38 +8,37 @@ public class PlayerMovement : MonoBehaviour
     private float speed;
 
     // Variables to hold movement direction
-    private float xdir = 0;
-    private float ydir = 0;
-    private float velocity;
+    private float xdir = 0f;
+    private float ydir = 0f;
+    private float diagLimiter = 0.7f;
+
+    // Player Rigidbody
+    private Rigidbody2D rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-        {
-            Move();
-        }
+        
     }
 
-    private void Move()
+    private void FixedUpdate()
     {
         // Get the player inputs
         xdir = Input.GetAxisRaw("Horizontal");
         ydir = Input.GetAxisRaw("Vertical");
 
-        xdir = xdir/(Mathf.Sqrt(Mathf.Pow(xdir, 2) + Mathf.Pow(ydir, 2)));
-        ydir = ydir/(Mathf.Sqrt(Mathf.Pow(xdir, 2) + Mathf.Pow(ydir, 2)));
+        if (xdir !=0 && ydir !=0)
+        {
+            xdir *= diagLimiter;
+            ydir *= diagLimiter;
+        }
 
-        // Find velocity
-        velocity = speed * Time.deltaTime;
-
-        // Apply player movement
-        transform.position = new Vector2(transform.position.x + xdir * velocity, transform.position.y + ydir * velocity);
+        rb.velocity = new Vector2(xdir * speed * Time.fixedDeltaTime, ydir * speed * Time.fixedDeltaTime);
     }
 }

@@ -11,24 +11,29 @@ public class EnemyBehaviour : MonoBehaviour
 
     private float xdir;
     private float ydir;
-    private float velocity;
 
+    private Rigidbody2D rb;
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
+        player = GameObject.FindWithTag("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
+
+    }
+
+    void FixedUpdate()
+    {
         xdir = player.transform.position.x - transform.position.x;
         ydir = player.transform.position.y - transform.position.y;
 
-        xdir = xdir/(Mathf.Sqrt(Mathf.Pow(xdir, 2) + Mathf.Pow(ydir, 2)));
-        ydir = ydir/(Mathf.Sqrt(Mathf.Pow(xdir, 2) + Mathf.Pow(ydir, 2)));
+        xdir = xdir / (Mathf.Sqrt(Mathf.Pow(xdir, 2) + Mathf.Pow(ydir, 2)));
+        ydir = ydir / (Mathf.Sqrt(Mathf.Pow(xdir, 2) + Mathf.Pow(ydir, 2)));
 
-        velocity = speed * Time.deltaTime;
-        transform.position = new Vector2(transform.position.x + xdir * velocity, transform.position.y + ydir * velocity);
+        rb.velocity = new Vector2(xdir * speed * Time.fixedDeltaTime, ydir * speed * Time.fixedDeltaTime);
     }
 }
